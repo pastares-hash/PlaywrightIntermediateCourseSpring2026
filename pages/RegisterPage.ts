@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class RegisterPage extends BasePage {
@@ -7,6 +7,7 @@ export class RegisterPage extends BasePage {
     readonly emailInput: Locator;
     readonly passwordInput: Locator;
     readonly signupButton: Locator;
+    readonly heading: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -15,12 +16,21 @@ export class RegisterPage extends BasePage {
         this.emailInput = page.getByPlaceholder('Email');
         this.passwordInput = page.getByPlaceholder('Password');
         this.signupButton = page.getByRole('button', { name: 'Sign up'});
+        this.heading = page.getByRole('heading', { name: 'Sign up' });
     }
 
     // Methods
 
     async goto() {
         await this.page.goto('/register');
+    }
+
+    async assertNavigatedOnPage() {
+        await this.page.waitForURL(/register/);
+    }
+
+    async assetOnPage() {
+        await expect(this.heading).toBeVisible();
     }
 
     async register(username: string, email: string, password: string) {

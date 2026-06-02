@@ -20,8 +20,36 @@ export class LoginPage extends BasePage{
     }
 
     async login(email: string, password: string) {
+        await this.fillEmailInput(email);
+        await this.fillPasswordInput(password);
+        await this.clickSignInButton();
+    }
+
+    async fillEmailInput(email: string) {
         await this.emailInput.fill(email);
+    }
+
+    async fillPasswordInput(password: string) {
         await this.passwordInput.fill(password);
+    }
+
+    async clickSignInButton() {
         await this.signInButton.click();
+    }
+
+    async assertSignInButtonState(isDisabled: boolean = true) {
+        if (isDisabled) {
+            await expect(this.signInButton).toBeDisabled();
+        } else {
+            await expect(this.signInButton).toBeEnabled();
+        }
+    }
+
+    async clearPasswordInputField() {
+        await this.passwordInput.clear()
+    }
+
+    async assertResponseStatus(response: { status(): number }, expectedStatus: number) {
+        expect(response.status()).toBe(expectedStatus)
     }
 }

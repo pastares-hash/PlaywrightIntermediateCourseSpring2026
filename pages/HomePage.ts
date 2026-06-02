@@ -7,6 +7,8 @@ export class HomePage extends BasePage{
     readonly signUpButton: Locator;
     readonly newArticleNavLink: Locator;
     readonly settingsNavLink: Locator;
+    readonly articlePreviews: Locator;
+    readonly articlePreviewLink: Locator;
 
     constructor(page: Page) {
         super(page);
@@ -15,9 +17,15 @@ export class HomePage extends BasePage{
         this.signUpButton = page.getByRole('link', { name: 'Sign up'});
         this.newArticleNavLink = page.getByRole('link', { name: 'New Article'});
         this.settingsNavLink = page.getByRole('link', { name: 'Settings'});
+        this.articlePreviews = page.locator('.article-preview');
+        this.articlePreviewLink = page.locator('.preview-link');
     }
 
     // Methods
+    async goto(options?: { timeout?: number }) {
+        await this.page.goto('/', options)
+    }
+
     async assertOnHomePage() {
         await expect(this.page).toHaveURL('/');
     }
@@ -34,5 +42,15 @@ export class HomePage extends BasePage{
 
     async clickNewAricleNavLink() {
         await this.newArticleNavLink.click();
+    }
+
+    async clickFirstArticle() {
+        await this.articlePreviews.first().locator('.preview-link').click();
+        // await this.articlePreviewLink.first().click();
+    }
+
+    async clickNthArticle(index: number) {
+        await this.articlePreviews.nth(index).locator('.preview-link').click();
+        // await this.articlePreviewLink.nth(index).click();
     }
 }
