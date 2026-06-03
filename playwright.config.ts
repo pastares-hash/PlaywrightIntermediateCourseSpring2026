@@ -37,13 +37,13 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: '**/07-complexUI.spec.ts',
+      testIgnore: '**/07-08-complexUI.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'the-internet',
-      testMatch: '**/07-complexUI.spec.ts',
+      testMatch: '**/07-08-complexUI.spec.ts',
       use: { 
         ...devices['Desktop Chrome'],
         baseURL: 'https://the-internet.herokuapp.com/'
