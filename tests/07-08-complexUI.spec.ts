@@ -5,6 +5,7 @@ import { WindowsPage } from '../pages/theInternetHerokuApp/WindowsPage';
 import { UploadPage } from '../pages/theInternetHerokuApp/UploadPage';
 import { DownloadPage } from '../pages/theInternetHerokuApp/DownloadPage';
 import { NestedFrames } from '../pages/theInternetHerokuApp/NestedFrames';
+import { iFramePage } from '../pages/theInternetHerokuApp/iFramePage';
 
 test.describe('JS Dialogs', () => {
     test('waitForEvent dialog - inspect type and message before handling', async ({ page }) => {
@@ -64,7 +65,7 @@ test.describe('JS Dialogs', () => {
         await alertsPage.assertResult('You clicked: Cancel');
     });
 
-    test.only('waitForEvent dialog - inspect prompt type and message before accepting', async ({ page }) => {
+    test('waitForEvent dialog - inspect prompt type and message before accepting', async ({ page }) => {
         const alertsPage = new AlertsPage(page);
 
         await alertsPage.goto();
@@ -153,5 +154,16 @@ test.describe('Nested frames and iFrames', () => {
         await nestedFrames.assertFrameContains('frame-left', 'LEFT');
         await nestedFrames.assertFrameContains('frame-middle', 'MIDDLE');
         await nestedFrames.assertFrameContains('frame-right', 'RIGHT');
+    });
+
+    test.only('iFrame', async ({ page }) => {
+        const iFrame = new iFramePage(page);
+
+        await iFrame.goto();
+
+        const text = "Supercalifragilisticexpialidocious"
+
+        await iFrame.enterText(text);
+        await iFrame.assertFrameHasText(text);
     });
 });
