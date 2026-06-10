@@ -25,6 +25,65 @@ test.describe('JS Dialogs', () => {
 
         await alertsPage.assertResult('You successfully clicked an alert');
     });
+
+    test('waitForEvent dialog - inspect confirm type and message before approving', async ({ page }) => {
+        const alertsPage = new AlertsPage(page);
+
+        await alertsPage.goto();
+
+        const dialogPromise = page.waitForEvent('dialog');
+
+        alertsPage.clickConfirmButton();
+
+        const dialog = await dialogPromise;
+
+        await alertsPage.assertDialogType(dialog, 'confirm');
+        await alertsPage.assertDialogMessage(dialog, 'I am a JS Confirm');
+
+        await dialog.accept();
+
+        await alertsPage.assertResult('You clicked: Ok');
+    });
+
+    test('waitForEvent dialog - inspect confirm type and message before declining', async ({ page }) => {
+        const alertsPage = new AlertsPage(page);
+
+        await alertsPage.goto();
+
+        const dialogPromise = page.waitForEvent('dialog');
+
+        alertsPage.clickConfirmButton();
+
+        const dialog = await dialogPromise;
+
+        await alertsPage.assertDialogType(dialog, 'confirm');
+        await alertsPage.assertDialogMessage(dialog, 'I am a JS Confirm');
+
+        await dialog.dismiss();
+
+        await alertsPage.assertResult('You clicked: Cancel');
+    });
+
+    test.only('waitForEvent dialog - inspect prompt type and message before accepting', async ({ page }) => {
+        const alertsPage = new AlertsPage(page);
+
+        await alertsPage.goto();
+
+        const dialogPromise = page.waitForEvent('dialog');
+
+        alertsPage.clickPromptButton();
+
+        const dialog = await dialogPromise;
+
+        await alertsPage.assertDialogType(dialog, 'prompt');
+        await alertsPage.assertDialogMessage(dialog, 'I am a JS prompt');
+
+        const text = "Prompt Text"
+
+        await dialog.accept(text);
+
+        await alertsPage.assertResult('You entered: ' + text);
+    });
 });
 
 
